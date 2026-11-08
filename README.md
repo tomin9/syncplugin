@@ -10,7 +10,7 @@ stiahne a nainštaluje/aktualizuje priamo na živom webe.
 
 1. Skopíruj priečinok `github-plugin-sync` do `wp-content/plugins/`.
 2. Aktivuj plugin – hneď pri aktivácii sa vygeneruje náhodný **webhook secret**.
-3. Choď do **Nastavenia → GitHub Plugin Sync**.
+3. Choď do **ľavé menu → Sync plug**.
 4. Pridaj repozitár:
    - **Repozitár** – `owner/repo`, napr. `tomin9/nox-art`.
    - **Vetva** – ktorú vetvu sledovať (napr. `main`).

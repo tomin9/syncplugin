@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) exit;
 
 function ghps_admin_menu() {
-    add_options_page('GitHub Plugin Sync', 'GitHub Plugin Sync', 'manage_options', 'github-plugin-sync', 'ghps_render_settings_page');
+    add_menu_page('GitHub Plugin Sync', 'Sync plug', 'manage_options', 'github-plugin-sync', 'ghps_render_settings_page', 'dashicons-update', 80);
 }
 add_action('admin_menu', 'ghps_admin_menu');
 
@@ -62,7 +62,7 @@ function ghps_handle_save_settings() {
     $settings['repos'] = $repos;
     update_option(GHPS_OPTION, $settings);
 
-    wp_safe_redirect(add_query_arg(['page' => 'github-plugin-sync', 'ghps_notice' => 'saved'], admin_url('options-general.php')));
+    wp_safe_redirect(add_query_arg(['page' => 'github-plugin-sync', 'ghps_notice' => 'saved'], admin_url('admin.php')));
     exit;
 }
 add_action('admin_post_ghps_save_settings', 'ghps_handle_save_settings');
@@ -75,7 +75,7 @@ function ghps_handle_regenerate_secret() {
     $settings['secret'] = wp_generate_password(40, false);
     update_option(GHPS_OPTION, $settings);
 
-    wp_safe_redirect(add_query_arg(['page' => 'github-plugin-sync', 'ghps_notice' => 'secret'], admin_url('options-general.php')));
+    wp_safe_redirect(add_query_arg(['page' => 'github-plugin-sync', 'ghps_notice' => 'secret'], admin_url('admin.php')));
     exit;
 }
 add_action('admin_post_ghps_regenerate_secret', 'ghps_handle_regenerate_secret');
@@ -101,7 +101,7 @@ function ghps_handle_manual_sync() {
         $notice = 'sync_error';
     }
 
-    wp_safe_redirect(add_query_arg(['page' => 'github-plugin-sync', 'ghps_notice' => $notice], admin_url('options-general.php')));
+    wp_safe_redirect(add_query_arg(['page' => 'github-plugin-sync', 'ghps_notice' => $notice], admin_url('admin.php')));
     exit;
 }
 add_action('admin_post_ghps_manual_sync', 'ghps_handle_manual_sync');
