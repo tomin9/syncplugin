@@ -52,6 +52,7 @@ function ghps_handle_save_settings() {
                 $entry['last_result'] = $old['last_result'] ?? '';
                 $entry['last_message'] = $old['last_message'] ?? '';
                 $entry['last_commit'] = $old['last_commit'] ?? '';
+                $entry['last_version'] = $old['last_version'] ?? '';
                 break;
             }
         }
@@ -221,6 +222,7 @@ function ghps_render_repo_row($repo, $index) {
                 <div>
                     <?php echo $repo['last_result'] === 'ok' ? '✅' : '⚠️'; ?>
                     <?php echo esc_html($repo['last_sync']); ?>
+                    <?php if (!empty($repo['last_version'])): ?><strong>v<?php echo esc_html($repo['last_version']); ?></strong><?php endif; ?>
                     <?php if (!empty($repo['last_commit'])): ?> (<code><?php echo esc_html($repo['last_commit']); ?></code>)<?php endif; ?>
                 </div>
                 <?php if (!empty($repo['last_message'])): ?>

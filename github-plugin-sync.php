@@ -2,14 +2,14 @@
 /**
  * Plugin Name: GitHub Plugin Sync
  * Description: Zadáš verejné GitHub repozitáre (a cestu k pluginu v nich) – pri každom pushi na sledovanú vetvu GitHub webhook okamžite pošle WordPressu signál a plugin sa automaticky stiahne a nainštaluje/aktualizuje z GitHubu. Bez FTP, bez ručného nahrávania zipov.
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: Ars Preuge
  * Text Domain: github-plugin-sync
  */
 
 if (!defined('ABSPATH')) exit;
 
-define('GHPS_VERSION', '1.0.5');
+define('GHPS_VERSION', '1.0.6');
 define('GHPS_DIR', plugin_dir_path(__FILE__));
 define('GHPS_OPTION', 'ghps_settings');
 

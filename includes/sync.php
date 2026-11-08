@@ -16,7 +16,7 @@ function ghps_find_repo_by_fullname($full_name) {
  * Zapíše výsledok posledného pokusu o sync pre daný repo (id) – zobrazuje sa
  * v administrácii, aby bolo hneď vidno, či posledný webhook prešiel.
  */
-function ghps_record_status($repo_id, $result, $message, $commit = '') {
+function ghps_record_status($repo_id, $result, $message, $commit = '', $version = '') {
     $settings = ghps_get_settings();
     foreach ($settings['repos'] as &$repo) {
         if ($repo['id'] === $repo_id) {
@@ -24,6 +24,7 @@ function ghps_record_status($repo_id, $result, $message, $commit = '') {
             $repo['last_result'] = $result;
             $repo['last_message'] = $message;
             if ($commit) $repo['last_commit'] = substr($commit, 0, 10);
+            if ($version) $repo['last_version'] = $version;
             break;
         }
     }
@@ -141,15 +142,20 @@ function ghps_sync_repo($repo, $commit = '') {
     if ($had_old) $wp_filesystem->delete($backup_dir, true);
 
     $main_file = ghps_find_plugin_main_file($target_dir, $slug);
+    $version = '';
+    if ($main_file) {
+        $plugin_data = get_plugin_data(trailingslashit(WP_PLUGIN_DIR) . $main_file, false, false);
+        $version = $plugin_data['Version'] ?? '';
+    }
     if (!empty($repo['activate']) && $main_file && !is_plugin_active($main_file)) {
         $activated = activate_plugin($main_file);
         if (is_wp_error($activated)) {
-            ghps_record_status($repo['id'], 'ok', 'Nainštalované, ale aktivácia zlyhala: ' . $activated->get_error_message(), $commit);
+            ghps_record_status($repo['id'], 'ok', 'Nainštalované, ale aktivácia zlyhala: ' . $activated->get_error_message(), $commit, $version);
             return true;
         }
     }
 
-    ghps_record_status($repo['id'], 'ok', 'Nainštalované.', $commit);
+    ghps_record_status($repo['id'], 'ok', 'Nainštalované.', $commit, $version);
     return true;
 }
 
