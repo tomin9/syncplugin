@@ -233,9 +233,9 @@ function ghps_render_repo_row($repo, $index) {
         <td>
             <input type="hidden" name="ghps_repos[<?php echo esc_attr($index); ?>][id]" value="<?php echo esc_attr($repo['id']); ?>">
             <?php if (!empty($repo['id'])): ?>
-                <a class="button" href="<?php echo esc_url($sync_admin_url); ?>">Synchronizovať teraz</a>
+                <a class="button" href="<?php echo esc_url($sync_admin_url); ?>" title="Synchronizovať teraz" aria-label="Synchronizovať teraz"><span class="dashicons dashicons-update" style="margin-top:4px"></span></a>
             <?php endif; ?>
-            <a href="#" class="button ghps-remove-row">Odstrániť</a>
+            <a href="#" class="button ghps-remove-row" title="Odstrániť" aria-label="Odstrániť"><span class="dashicons dashicons-trash" style="margin-top:4px"></span></a>
         </td>
     </tr>
     <?php
