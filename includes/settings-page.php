@@ -212,10 +212,10 @@ function ghps_render_repo_row($repo, $index) {
     );
     ?>
     <tr>
-        <td><input type="text" name="ghps_repos[<?php echo esc_attr($index); ?>][repo]" value="<?php echo esc_attr($repo['repo']); ?>" placeholder="owner/repo" style="width:210px;max-width:100%"></td>
+        <td><input type="text" name="ghps_repos[<?php echo esc_attr($index); ?>][repo]" value="<?php echo esc_attr($repo['repo']); ?>" placeholder="owner/repo" style="width:160px;max-width:100%"></td>
         <td><input type="text" name="ghps_repos[<?php echo esc_attr($index); ?>][branch]" value="<?php echo esc_attr($repo['branch'] ?: 'main'); ?>" placeholder="main" style="width:100px"></td>
         <td><input type="text" name="ghps_repos[<?php echo esc_attr($index); ?>][path]" value="<?php echo esc_attr($repo['path'] ?? ''); ?>" placeholder="(prázdne = koreň repa)" style="width:210px;max-width:100%"></td>
-        <td><input type="text" name="ghps_repos[<?php echo esc_attr($index); ?>][slug]" value="<?php echo esc_attr($repo['slug']); ?>" placeholder="napr. nox-art-festival" style="width:210px;max-width:100%"></td>
+        <td><input type="text" name="ghps_repos[<?php echo esc_attr($index); ?>][slug]" value="<?php echo esc_attr($repo['slug']); ?>" placeholder="napr. nox-art-festival" style="width:160px;max-width:100%"></td>
         <td style="text-align:center"><input type="checkbox" name="ghps_repos[<?php echo esc_attr($index); ?>][activate]" <?php checked(!empty($repo['activate'])); ?>></td>
         <td>
             <?php if (!empty($repo['id']) && !empty($repo['last_sync'])): ?>
