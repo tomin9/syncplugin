@@ -149,7 +149,7 @@ function ghps_sync_repo($repo, $commit = '') {
         }
     }
 
-    ghps_record_status($repo['id'], 'ok', 'Nainštalované z vetvy "' . $branch . '".', $commit);
+    ghps_record_status($repo['id'], 'ok', 'Nainštalované.', $commit);
     return true;
 }
 
