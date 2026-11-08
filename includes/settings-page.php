@@ -223,7 +223,6 @@ function ghps_render_repo_row($repo, $index) {
                     <?php echo $repo['last_result'] === 'ok' ? '✅' : '⚠️'; ?>
                     <?php echo esc_html($repo['last_sync']); ?>
                     <?php if (!empty($repo['last_version'])): ?><strong>v<?php echo esc_html($repo['last_version']); ?></strong><?php endif; ?>
-                    <?php if (!empty($repo['last_commit'])): ?> (<code><?php echo esc_html($repo['last_commit']); ?></code>)<?php endif; ?>
                 </div>
                 <?php if (!empty($repo['last_message'])): ?>
                     <div style="max-width:320px;color:<?php echo $repo['last_result'] === 'ok' ? '#555' : '#a00'; ?>"><?php echo esc_html($repo['last_message']); ?></div>
