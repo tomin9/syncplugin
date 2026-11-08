@@ -42,7 +42,7 @@ prvotné otestovanie).
   nastaveniach GitHub webhooku) sa nedá vynútiť inštalácia ničoho.
 - Funguje len s **verejnými** repozitármi – žiadny GitHub token sa nikde
   neukladá.
-- Pri synchronizácii sa celý obsah cieľového priečinka pluginu vymaže a
+- Pri synchronizácii sa nová verzia najprv skopíruje do dočasného priečinka a až potom nahradí starú (pri chybe ostane pôvodná). Obsah cieľového priečinka sa nahradí a
   nahradí obsahom z GitHubu – necháva ho teda ako presnú kópiu danej vetvy.
   Prípadné úpravy urobené priamo na serveri (mimo GitHubu) sa touto cestou
   stratia.

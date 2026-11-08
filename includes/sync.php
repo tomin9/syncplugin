@@ -103,17 +103,42 @@ function ghps_sync_repo($repo, $commit = '') {
         return $err;
     }
 
-    $target_dir = trailingslashit(WP_PLUGIN_DIR) . $slug;
-    if ($wp_filesystem->is_dir($target_dir)) {
-        $wp_filesystem->delete($target_dir, true);
+    // Bezpečná výmena: nová verzia sa najprv skopíruje do dočasného priečinka
+    // vedľa pluginu, a až keď je kompletná, nahradí starú. Ak čokoľvek zlyhá,
+    // pôvodná verzia ostane (alebo sa vráti) na mieste.
+    $plugins_root = trailingslashit(WP_PLUGIN_DIR);
+    $target_dir = $plugins_root . $slug;
+    $stage_dir = $plugins_root . '.ghps-new-' . $slug;
+    $backup_dir = $plugins_root . '.ghps-old-' . $slug;
+
+    foreach ([$stage_dir, $backup_dir] as $leftover) {
+        if ($wp_filesystem->is_dir($leftover)) $wp_filesystem->delete($leftover, true);
     }
-    $copied = copy_dir($source_dir, $target_dir);
+
+    $copied = copy_dir($source_dir, $stage_dir);
     $wp_filesystem->delete($work_dir, true);
 
     if (is_wp_error($copied)) {
-        ghps_record_status($repo['id'], 'error', 'Kopírovanie zlyhalo: ' . $copied->get_error_message());
+        $wp_filesystem->delete($stage_dir, true);
+        ghps_record_status($repo['id'], 'error', 'Kopírovanie zlyhalo (pôvodná verzia ostala nedotknutá): ' . $copied->get_error_message());
         return $copied;
     }
+
+    $had_old = $wp_filesystem->is_dir($target_dir);
+    if ($had_old && !$wp_filesystem->move($target_dir, $backup_dir, true)) {
+        $wp_filesystem->delete($stage_dir, true);
+        $err = new WP_Error('ghps_swap_failed', 'Nepodarilo sa odsunúť starú verziu pluginu.');
+        ghps_record_status($repo['id'], 'error', $err->get_error_message());
+        return $err;
+    }
+    if (!$wp_filesystem->move($stage_dir, $target_dir, true)) {
+        if ($had_old) $wp_filesystem->move($backup_dir, $target_dir, true); // vráť späť
+        $wp_filesystem->delete($stage_dir, true);
+        $err = new WP_Error('ghps_swap_failed', 'Nepodarilo sa nasadiť novú verziu, vrátená bola pôvodná.');
+        ghps_record_status($repo['id'], 'error', $err->get_error_message());
+        return $err;
+    }
+    if ($had_old) $wp_filesystem->delete($backup_dir, true);
 
     $main_file = ghps_find_plugin_main_file($target_dir, $slug);
     if (!empty($repo['activate']) && $main_file && !is_plugin_active($main_file)) {
